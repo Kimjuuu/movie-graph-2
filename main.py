@@ -17,7 +17,7 @@ def load_data():
     url = "https://raw.githubusercontent.com/greatsong/modudata/main/data/kobis_movies.csv"
     df = pd.read_csv(url)
 
-    # .str 접근자를 활용해 안전하게 문자열 분리 및 공백 제거
+    # 문자열 접근자(.str)를 직접 연결 사용하여 Python 3.14 호환성 확보
     df["primary_genre"] = df["genre"].astype(str).str.split("|").str[0].str.strip()
 
     return df
@@ -59,7 +59,7 @@ st.info(
 st.markdown("---")
 st.header("2. 장르 및 영화별 총 관객수 분포")
 
-# 고유한 경로 설정을 위해 movieCd를 함께 포함하여 계층 생성
+# 고유한 경로 설정을 위해 movieCd를 함께 포함하여 계층 충돌(ValueError) 방지
 fig2 = px.treemap(
     df,
     path=[px.Constant("전체 영화"), "primary_genre", "movieNm", "movieCd"],
